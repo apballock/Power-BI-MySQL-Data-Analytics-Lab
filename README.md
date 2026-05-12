@@ -379,8 +379,8 @@ After correction:
 
 A bar chart was built using:
 
-- X-Axis: Total Revenue
-- Y-Axis: Product Name
+- X-Axis: Product Name
+- Y-Axis: Total Revenue
 
 The chart was sorted in descending order to identify the highest revenue-generating products.
 
