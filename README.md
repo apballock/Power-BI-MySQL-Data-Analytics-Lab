@@ -283,3 +283,151 @@ The Calendar Table is not optional in professional Power BI projects — it is a
 ## Screenshot
 
 ![Calendar Table Model](screenshots/nivel1_ejerc3_calendar_table.png)
+
+---
+
+## Level 2 – Advanced DAX Functions  
+### Exercise 1 – RELATED Function
+
+### Objective
+
+Use the RELATED() DAX function to bring information from one table into another, similar to:
+
+- SQL JOINs
+- Excel VLOOKUP/XLOOKUP
+- Relational database lookups
+
+This is a fundamental concept in professional Power BI data modeling.
+
+---
+
+## Calculated Columns Created
+
+Using the MySQL tables imported previously (`sales_db sales` and `sales_db products`), three calculated columns were created inside the sales table.
+
+### Product Name
+
+DAXProduct Name =
+RELATED('sales_db products'[product_name])
+
+---
+
+### Unit Price
+
+DAXUnit Price =
+RELATED('sales_db products'[unit_price])
+
+---
+
+### Total Revenue
+
+DAXTotal Revenue =
+'sales_db sales'[units_sold] * 'sales_db sales'[DAXUnit Price]
+
+---
+
+## Issue Encountered
+
+### Problem
+
+The first RELATED() formula initially returned an error saying the column or relationship could not be found.
+
+---
+
+## Root Cause Analysis
+
+Two issues were identified:
+
+### 1. Incorrect Table Name
+
+The imported MySQL tables were not named simply:
+
+- products
+- sales
+
+Power BI imported them as:
+
+- sales_db products
+- sales_db sales
+
+Because of this, the original DAX formula referenced the wrong table name.
+
+---
+
+### 2. Relationship Validation
+
+The relationship between the tables was verified in Model View using:
+
+- product_id
+
+The relationship existed correctly, confirming the problem was related to naming rather than data modeling.
+
+---
+
+## Solution Applied
+
+The formulas were updated using the correct table names imported by Power BI.
+
+After correction:
+- RELATED() successfully retrieved product information
+- Revenue calculations worked correctly
+- The sales table was enriched with product attributes
+
+---
+
+##  Visualization Created
+
+A bar chart was built using:
+
+- X-Axis: Total Revenue
+- Y-Axis: Product Name
+
+The chart was sorted in descending order to identify the highest revenue-generating products.
+
+---
+
+## Business Insight
+
+### Top Revenue Product
+
+Paseo generated the highest total revenue.
+
+### Interpretation
+
+Paseo combines:
+- High unit price
+- Strong sales volume
+
+This makes it the strongest revenue contributor in the dataset.
+
+---
+
+## RELATED() vs DAX Measure
+
+### RELATED() Calculated Column
+
+- Creates a permanent value stored row-by-row
+- Similar to a SQL JOIN enrichment
+- Calculated during data refresh
+
+### DAX Measure
+
+- Calculated dynamically
+- Depends on filter context and visuals
+- Not physically stored in the dataset
+
+---
+
+## Key Takeaway
+
+This exercise demonstrates one of the most important concepts in BI modeling:
+
+Using relationships to enrich fact tables instead of duplicating data manually.
+
+Understanding RELATED() is essential for scalable and normalized Power BI models.
+
+---
+
+## Screenshot
+
+![RELATED Function Chart](screenshots/nivel2_ejerc1_related.png)
