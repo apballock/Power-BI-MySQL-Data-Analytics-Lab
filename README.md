@@ -1,3 +1,5 @@
+**Author:** Ana Ballock | [LinkedIn](linkedin.com/in/anaballock) | [GitHub](github.com/apballock)
+
 ## Level 1 – Connectors & Power Query Transformations  
 ### Exercise 1 – Connect Power BI to MySQL
 
