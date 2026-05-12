@@ -5,7 +5,7 @@
 
 ### Objective
 
-Connect :contentReference[oaicite:0]{index=0} to a MySQL database to simulate a real-world enterprise data source (instead of flat files).
+Connect Power BI to a MySQL database to simulate a real-world enterprise data source (instead of flat files).
 
 ---
 
