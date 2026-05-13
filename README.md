@@ -566,7 +566,7 @@ At first, there was uncertainty about whether the formulas should be created as 
 ### Solution
 
 The exercise correctly required:
-- **Measures** (calculator icon 🧮)
+- **Measures** (calculator icon)
 
 because:
 - results aggregate dynamically depending on the visual context
@@ -769,7 +769,7 @@ SUMX(
 
 ---
 
-## 📊 Visualization Created
+## Visualization Created
 
 A bar chart was built using:
 
@@ -830,3 +830,137 @@ CROSSFILTER is especially useful in complex enterprise datasets where default re
 ![CROSSFILTER Chart](screenshots/nivel3_ejerc1_crossfilter.png)
 
 ---
+
+## Exercise 2 – Report, Page & Visual Level Filters
+
+### Objective
+Understand and apply the 3 levels of filtering available in Power BI:
+
+- Visual Level Filters
+- Page Level Filters
+- Report Level Filters
+
+This exercise demonstrates how filter scope changes the behavior of visuals and report pages in a professional BI environment.
+
+---
+
+## Visual Level Filter
+
+Created a bar chart using:
+
+- Y Axis: Segment
+- X Axis: Sales
+
+Applied a **Visual Level Filter** directly to the chart:
+
+- Filter field: `Sales`
+- Condition: `Sales > 500000`
+
+### Result
+Only segments with total sales above 500k remained visible in that specific visual.
+
+### Real-World Use Case
+Visual filters are useful when:
+- Highlighting top-performing categories
+- Removing noise/outliers from a specific chart
+- Creating focused KPIs without affecting the rest of the dashboard
+
+---
+
+## Page Level Filter
+
+Applied a **Page Level Filter**:
+
+- Field: `Country`
+- Selected values:
+  - USA
+  - Canada
+  - France
+
+### Result
+Every visual on the current page updated automatically to display only data from those 3 countries.
+
+### Real-World Use Case
+Page filters are ideal when:
+- Building region-specific dashboard pages
+- Creating executive views for a business unit
+- Comparing selected markets without changing the entire report
+
+---
+
+## Report Level Filter
+
+Applied a **Report Level Filter**:
+
+- Field: `Year`
+- Selected value:
+  - 2014
+
+### Result
+The filter propagated across the entire report, affecting all report pages automatically.
+
+Testing another page confirmed that every visual in the report was restricted to 2014 data.
+
+### Real-World Use Case
+Report filters are commonly used when:
+- Reports must always display the current fiscal year
+- Security or compliance requires global restrictions
+- Stakeholders should analyze only a predefined timeframe
+
+---
+
+## Key Differences Between Filter Levels
+
+| Filter Level | Scope | Typical Business Usage |
+|---|---|---|
+| Visual Filter | Only one visual | Highlight specific KPIs or remove noise |
+| Page Filter | Entire report page | Regional or department-focused analysis |
+| Report Filter | Entire report | Global constraints and standardized reporting |
+
+---
+
+## Business Insight
+
+This exercise demonstrates how Power BI supports layered analytical storytelling.
+
+By combining different filter scopes, analysts can:
+- Maintain consistent global reporting rules
+- Build focused regional pages
+- Create highly customized visuals without duplicating datasets
+
+This flexibility is essential in enterprise dashboards where executives, managers, and analysts often need different levels of granularity from the same report.
+
+---
+
+## Issues Encountered & Solutions
+
+### Issue — Filter options not visible initially
+When applying the Visual Level Filter, the `Sales` field was already automatically present in the Filters panel because it was part of the visual itself.
+
+### Solution
+Expanded the existing `Sales` filter card and switched:
+- From: `Basic filtering`
+- To: `Advanced filtering`
+
+Then configured:
+- `Sales > 500000`
+
+This clarified how Power BI auto-generates filter cards based on visual fields.
+
+---
+
+## What Happens When a Report Level Filter Is Applied?
+
+A Report Level Filter affects **every page and visual** in the `.pbix` file.
+
+After applying the `Year = 2014` filter:
+- All existing pages updated automatically
+- Every visual became restricted to 2014 data
+- Cross-page consistency was maintained without manual edits
+
+This behavior is especially important in enterprise reporting environments where centralized control is required.
+
+---
+
+## Screenshot
+![FILTERS DEMO](screenshots/nivel3_ejerc2_filters.png)
