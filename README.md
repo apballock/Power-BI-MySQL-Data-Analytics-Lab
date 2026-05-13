@@ -431,3 +431,402 @@ Understanding RELATED() is essential for scalable and normalized Power BI models
 ## Screenshot
 
 ![RELATED Function Chart](screenshots/nivel2_ejerc1_related.png)
+
+---
+
+## Exercise 2 – SUMX Function
+
+### Objective
+Use `SUMX()` and `AVERAGEX()` to perform row-by-row calculations before aggregating results.
+
+Unlike `SUM()`, iterator functions such as `SUMX()` evaluate an expression for each row individually, making them essential for advanced financial and revenue calculations.
+
+This exercise simulated a real business scenario:
+calculating revenue dynamically from transactional data stored across related tables.
+
+---
+
+## DAX Measures Created
+
+### Total Revenue using SUMX
+
+```DAX
+DAXTotal Revenue SUMX =
+SUMX(
+    'sales_db sales',
+    'sales_db sales'[units_sold] * RELATED('sales_db products'[unit_price])
+)
+```
+
+### Average Revenue per Sale
+
+```DAX
+DAXAvg Revenue per Sale =
+AVERAGEX(
+    'sales_db sales',
+    'sales_db sales'[units_sold] * RELATED('sales_db products'[unit_price])
+)
+```
+
+---
+
+## Matrix Visualization
+
+Built a Matrix visual with:
+
+| Field Area | Value |
+|---|---|
+| Rows | country |
+| Columns | category |
+| Values | Total Revenue SUMX |
+
+This structure created a multidimensional revenue breakdown by:
+- geography
+- product category
+
+A KPI Card was also added to display:
+- Average Revenue per Sale
+
+---
+
+## Business Insights
+
+### Highest Revenue Combination
+
+The country + category combination with the highest revenue was:
+
+- **Spain + Bikes**
+
+This result makes business sense because:
+- Spain had multiple sales transactions
+- Bikes have the highest unit prices in the dataset
+- Products like *Paseo* generated particularly strong revenue performance
+
+This demonstrates how combining transaction volume with product pricing reveals the true revenue drivers behind a business.
+
+---
+
+### Average Revenue per Sale
+
+Average Revenue per Sale:
+
+- **3.04k**
+
+This KPI helps estimate:
+- average transaction value
+- customer purchasing behavior
+- product mix quality
+
+Higher average revenue per transaction usually indicates:
+- premium products
+- higher-volume orders
+- stronger monetization efficiency
+
+---
+
+## SUM vs SUMX
+
+| Function | Behavior |
+|---|---|
+| `SUM()` | Simply adds values from a single column |
+| `SUMX()` | Iterates row-by-row, evaluates an expression, then aggregates the results |
+
+### Why SUMX Was Necessary
+
+A regular `SUM()` could not calculate:
+
+```DAX
+units_sold * unit_price
+```
+
+because:
+- `units_sold` exists in the `sales` table
+- `unit_price` exists in the `products` table
+
+`SUMX()` solved this by:
+1. Iterating through each sales row
+2. Pulling the related product price using `RELATED()`
+3. Calculating revenue row-by-row
+4. Aggregating the final result
+
+This mirrors how revenue calculations are handled in real enterprise BI models.
+
+---
+
+## Issues Encountered & Solutions
+
+### Issue — Confusion Between Measures and Columns
+
+During development, it was necessary to distinguish:
+- calculated columns
+- DAX measures
+
+At first, there was uncertainty about whether the formulas should be created as columns or measures.
+
+### Solution
+
+The exercise correctly required:
+- **Measures** (calculator icon 🧮)
+
+because:
+- results aggregate dynamically depending on the visual context
+- values change automatically based on filters and matrix grouping
+
+This reinforced a key Power BI modeling concept:
+- calculated columns are static row-level data
+- measures are dynamic context-aware calculations
+
+---
+
+## Technical Learning
+
+This exercise demonstrated several important Power BI concepts:
+
+- Iterator functions (`SUMX`, `AVERAGEX`)
+- Relationship-based calculations using `RELATED()`
+- Context-aware aggregation
+- Matrix visual analysis
+- KPI card creation
+
+These are core skills frequently used in:
+- financial reporting
+- sales analytics
+- enterprise BI dashboards
+
+---
+
+## Screenshot
+
+Saved as:
+![SUMX](screenshots/nivel2_ejerc2_sumx.png)
+
+---
+
+## Exercise 3 – Organize DAX with a Measures Table
+
+### Objective
+
+Create a dedicated table to centralize all DAX measures in the Power BI model.
+
+This is considered a best practice in professional BI projects because it improves:
+- model organization
+- scalability
+- maintenance
+- measure discoverability
+
+---
+
+## Measures Table Creation
+
+An empty table was created using:
+
+DAX_Measures =
+ROW("Info", "All measures stored here")
+
+After creation:
+- all existing DAX measures were moved into this table
+- the Info column was hidden
+- the table became a centralized repository for calculations
+
+The table was intentionally named with an underscore prefix:
+- `_Measures`
+
+This keeps it pinned near the top of the Data panel for easier navigation.
+
+---
+
+## Measures Organized
+
+The Measures table now contains:
+
+- Profit Margin %
+- Avg Sale per Unit
+- Total COGS
+- DAXTotal Revenue SUMX
+- DAXAvg Revenue per Sale
+- CROSSFILTER measures
+
+All measures display the calculator icon, improving model readability.
+
+---
+
+## Why This Matters
+
+As Power BI projects grow, measures scattered across multiple tables create:
+- maintenance complexity
+- navigation confusion
+- harder debugging
+
+Centralizing measures creates a cleaner semantic model and improves long-term project scalability.
+
+---
+
+## Key Takeaway
+
+Professional Power BI development is not only about building visuals.
+
+It is also about:
+- model governance
+- maintainability
+- clean architecture
+
+A dedicated Measures table is a standard best practice in enterprise BI environments.
+
+---
+
+## Screenshot
+
+![Measures Table](screenshots/nivel2_ejerc3_measures_table.png)
+
+---
+
+## Level 3 – Filters & CROSSFILTER  
+### Exercise 1 – CROSSFILTER Function
+
+### Objective
+
+Use the CROSSFILTER() DAX function to temporarily modify filter direction between related tables.
+
+This allows more flexible analysis when default relationship behavior is not sufficient.
+
+---
+
+## Measures Created
+
+### Products with Sales
+
+DAXProducts with Sales =
+CALCULATE(
+    COUNTROWS('sales_db products'),
+    CROSSFILTER(
+        'sales_db sales'[product_id],
+        'sales_db products'[product_id],
+        BOTH
+    )
+)
+
+---
+
+### Total Units by Category
+
+Initial approach:
+
+DAXTotal Units by Category =
+CALCULATE(
+    SUM('sales_db sales'[units_sold]),
+    CROSSFILTER(
+        'sales_db sales'[product_id],
+        'sales_db products'[product_id],
+        BOTH
+    )
+)
+
+---
+
+## Visualization Issue Encountered
+
+### Problem
+
+The measure initially failed when added to the chart.
+
+Power BI returned the message:
+
+> “Ese campo no se puede usar aquí porque requiere un campo que no es de medidas.”
+
+The chart appeared blank or incorrectly configured.
+
+---
+
+## Root Cause Analysis
+
+Two factors caused confusion:
+
+### 1. Horizontal Bar Chart Axis Logic
+
+The visual used was a horizontal bar chart, where:
+- X-Axis expects numeric measures
+- Y-Axis expects categorical values
+
+Initially, the fields were placed in the opposite configuration.
+
+---
+
+### 2. CROSSFILTER Context Complexity
+
+The original CROSSFILTER measure created ambiguity in the visual context.
+
+A simplified measure using SUMX and CALCULATE was implemented to stabilize aggregation behavior.
+
+---
+
+## Final Working Measure
+
+DAXTotal Units by Category =
+SUMX(
+    'sales_db products',
+    CALCULATE(SUM('sales_db sales'[units_sold]))
+)
+
+---
+
+## 📊 Visualization Created
+
+A bar chart was built using:
+
+- X-Axis: Total Units by Category
+- Y-Axis: category
+
+A Card visual was also added showing:
+- Products with Sales = 5
+
+---
+
+## Business Insight
+
+### Top Category by Units Sold
+
+The Bikes category generated the highest number of units sold.
+
+### Interpretation
+
+This suggests:
+- strong product-market demand
+- higher transaction volume
+- Bikes acting as the primary operational revenue driver
+
+Additionally:
+- all 5 products registered sales activity
+- no inactive inventory was identified in the dataset
+
+---
+
+## CROSSFILTER vs Regular CALCULATE
+
+### Regular CALCULATE
+Uses the existing relationship direction defined in the data model.
+
+### CROSSFILTER
+Temporarily overrides relationship direction during calculation execution.
+
+This allows:
+- bidirectional filtering
+- more flexible analytical scenarios
+- advanced relationship control
+
+---
+
+## Key Takeaway
+
+This exercise demonstrates an advanced data modeling concept:
+
+> understanding filter propagation is critical for building accurate analytical models.
+
+CROSSFILTER is especially useful in complex enterprise datasets where default relationship behavior is insufficient.
+
+---
+
+## Screenshot
+
+![CROSSFILTER Chart](screenshots/nivel3_ejerc1_crossfilter.png)
+
+---
