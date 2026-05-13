@@ -596,8 +596,6 @@ These are core skills frequently used in:
 ---
 
 ## Screenshot
-
-Saved as:
 ![SUMX](screenshots/nivel2_ejerc2_sumx.png)
 
 ---
