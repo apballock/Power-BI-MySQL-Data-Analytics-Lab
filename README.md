@@ -721,35 +721,9 @@ CALCULATE(
 
 ---
 
-## Visualization Issue Encountered
+## Issue Encountered
 
-### Problem
-
-The measure initially failed when added to the chart.
-
-Power BI returned the message:
-
-> “Ese campo no se puede usar aquí porque requiere un campo que no es de medidas.”
-
-The chart appeared blank or incorrectly configured.
-
----
-
-## Root Cause Analysis
-
-Two factors caused confusion:
-
-### 1. Horizontal Bar Chart Axis Logic
-
-The visual used was a horizontal bar chart, where:
-- X-Axis expects numeric measures
-- Y-Axis expects categorical values
-
-Initially, the fields were placed in the opposite configuration.
-
----
-
-### 2. CROSSFILTER Context Complexity
+### CROSSFILTER Context Complexity
 
 The original CROSSFILTER measure created ambiguity in the visual context.
 
